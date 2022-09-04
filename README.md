@@ -15,6 +15,11 @@ git clone https://github.com/hlissner/zsh-autopair ~/.zsh-autopair
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 source .zshrc
+
+cd ~/opt/
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+git clone https://github.com/erikw/tmux-powerline.git
+
 tmux source ~/.tmux.conf
 
 ```
