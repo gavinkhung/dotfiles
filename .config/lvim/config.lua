@@ -41,6 +41,21 @@ lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
 lvim.keys.normal_mode["<C-S-g>"] = ":DiffviewFileHistory %<CR>"
 
 
+-- lvim.builtin.which_key.mappings["S"] = {
+--   name = "Session",
+--   c = { "<cmd>lua require('folke/persistence.nvim').load()<cr>", "Restore last session for current dir" },
+--   l = { "<cmd>lua require('folke/persistence.nvim').load({ last = true })<cr>", "Restore last session" },
+--   Q = { "<cmd>lua require('folke/persistence.nvim').stop()<cr>", "Quit without saving session" },
+-- }
+
+
+lvim.builtin.which_key.mappings["S"] = {
+  name = "Session",
+  c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
+  l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
+  Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+}
+
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
@@ -138,6 +153,10 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "node_modules/*",
   ".next/*",
   ".conf/*",
+  ".oh-my-zsh/*",
+  ".tmux/",
+  ".npm/",
+  "opt/*",
   "%.jpg",
   "%.jpeg",
   "%.png",
@@ -206,6 +225,8 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
+lvim.builtin.lualine.sections.lualine_a = { "mode" }
+lvim.builtin.lualine.sections.lualine_z = { "encoding", "location", "progress" }
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -265,8 +286,6 @@ lvim.plugins = {
       })
     end
   },
-  -- { "folke/tokyonight.nvim"},
-  -- { "tomasiser/vim-code-dark" },
   { "tpope/vim-surround", },
   { "windwp/nvim-ts-autotag",
     config = function()
@@ -296,7 +315,9 @@ lvim.plugins = {
   },
   {
     "simrat39/symbols-outline.nvim",
-    cmd = "SymbolsOutline",
+    config = function()
+      require('symbols-outline').setup()
+    end
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -390,5 +411,26 @@ lvim.plugins = {
     "sindrets/diffview.nvim",
     event = "BufRead",
   },
-  { "mg979/vim-visual-multi" }
+  { "mg979/vim-visual-multi" },
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre", -- this will only start session saving when an actual file was opened
+    -- module = "persistence",
+    config = function()
+      require("persistence").setup {
+        dir = vim.fn.expand(vim.fn.stdpath "config" .. "/session/"),
+        options = { "buffers", "curdir", "tabpages", "winsize" },
+      }
+    end,
+  },
+  {
+    "nacro90/numb.nvim",
+    event = "BufRead",
+    config = function()
+      require("numb").setup {
+        show_numbers = true, -- Enable 'number' for the window while peeking
+        show_cursorline = true, -- Enable 'cursorline' for the window while peeking
+      }
+    end,
+  },
 }
