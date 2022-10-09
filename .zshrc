@@ -3,14 +3,18 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+export VISUAL=lvim
+export EDITOR="$VISUAL"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
-plugins=(git gh pip python brew node vscode autopep8 gitignore zsh-autosuggestions vi-mode history-substring-search zsh-syntax-highlighting)
+plugins=(git gh pip python brew node vscode autopep8 gitignore copyfile copypath zsh-autosuggestions vi-mode history-substring-search zsh-syntax-highlighting)
+
 ZSH_AUTOSUGGEST_STRATEGY="completion"
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#9699a3"
 
 HYPHEN_INSENSITIVE="true"
 
@@ -44,10 +48,18 @@ alias vim="lvim"
 alias man="tldr"
 alias rm="trash"
 alias grep="rg"
+alias find="fd"
+alias ls="exa"
+alias du="dust"
+alias df="duf"
+alias nnn="nnn -de"
 alias cat="bat --paging=never"
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
-alias run-cpp='g++ -std=c++20 -o a.out "$@"'
+alias gcc='gcc-12'
+alias g++='g++-12'
+
+alias grace="ssh -Y ghung@grace.umd.edu"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
