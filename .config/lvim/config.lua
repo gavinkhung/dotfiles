@@ -36,10 +36,12 @@ lvim.keys.normal_mode["<C-f>"] = ":NvimTreeRefresh | NvimTreeFindFileToggle<CR>"
 
 lvim.keys.normal_mode["<S-q>"] = ":BufferKill<CR>"
 
-lvim.keys.normal_mode["<C-`>"] = ":ToggleTerm<CR>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<CR>"
 lvim.keys.normal_mode["<C-S-g>"] = ":DiffviewFileHistory %<CR>"
 
+
+lvim.keys.normal_mode["<s-l>"] = ":BufferLineCycleNext<CR>"
+lvim.keys.normal_mode["<s-h>"] = ":BufferLineCyclePrev<CR>"
 
 -- lvim.builtin.which_key.mappings["S"] = {
 --   name = "Session",
@@ -142,7 +144,6 @@ lvim.builtin.alpha.dashboard.section.header.val = {
 --   "⣿⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⣿",
 -- }
 
-lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "vendor/*",
@@ -222,7 +223,6 @@ lvim.builtin.treesitter.ensure_installed = {
   "cpp"
 }
 
-lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
 lvim.builtin.lualine.sections.lualine_a = { "mode" }
@@ -320,32 +320,6 @@ lvim.plugins = {
     end
   },
   {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "BufRead",
-    config = function()
-      local opts = {
-        char = "▏",
-        filetype_exclude = {
-          "alpha",
-          "help",
-          "terminal",
-          "dashboard",
-          "lspinfo",
-          "lsp-installer",
-          "mason",
-        },
-        buftype_exclude = { "terminal" },
-        bufname_exclude = { "config.lua" },
-
-        show_trailing_blankline_indent = false,
-        show_first_indent_level = false,
-        -- use_treesitter = false,
-      }
-
-      require("indent_blankline").setup(opts)
-    end
-  },
-  {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
     config = function() require "lsp_signature".on_attach() end,
@@ -432,5 +406,23 @@ lvim.plugins = {
         show_cursorline = true, -- Enable 'cursorline' for the window while peeking
       }
     end,
+  },
+  {
+    "rmagatti/goto-preview",
+    config = function()
+      require('goto-preview').setup {
+        width = 120, -- Width of the floating window
+        height = 25, -- Height of the floating window
+        default_mappings = true, -- Bind default mappings
+        debug = false, -- Print debug information
+        opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
+        post_open_hook = nil,
+        -- You can use "default_mappings = true" setup option
+        -- Or explicitly set keybindings
+        -- vim.cmd("nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>"),
+        -- vim.cmd("nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>"),
+        -- vim.cmd("nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>")
+      }
+    end
   },
 }
