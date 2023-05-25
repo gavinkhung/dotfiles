@@ -1,33 +1,53 @@
 -- general
-vim.opt.clipboard = "unnamedplus"
-vim.opt.expandtab = true
-vim.opt.relativenumber = true
-vim.opt.termguicolors = true
-vim.opt.ignorecase = true
-vim.opt.wrap = false
-vim.opt.scrolloff = 8
-vim.opt.undodir = vim.fn.stdpath "cache" .. "/undo"
-vim.opt.undofile = true
+vim.opt.clipboard                         = "unnamedplus"
+vim.opt.expandtab                         = true
+vim.opt.relativenumber                    = true
+vim.opt.termguicolors                     = true
+vim.opt.ignorecase                        = true
+vim.opt.wrap                              = false
+vim.opt.scrolloff                         = 8
+vim.opt.undodir                           = vim.fn.stdpath "cache" .. "/undo"
+vim.opt.undofile                          = true
+vim.opt.spell                             = true
 
-lvim.colorscheme = "kanagawa"
+lvim.colorscheme                          = "kanagawa"
 
-lvim.log.level = "warn"
-lvim.format_on_save = true
-lvim.lint_on_save = true
-lvim.transparent_window = true
+lvim.log.level                            = "warn"
+lvim.format_on_save                       = true
+lvim.lint_on_save                         = true
+lvim.transparent_window                   = true
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
-lvim.leader = "space"
+lvim.leader                               = "space"
 -- add your own keymapping:w
-lvim.keys.normal_mode["<C-b>"] = ":NvimTreeRefresh | NvimTreeToggle<CR>"
-lvim.keys.normal_mode["<C-f>"] = ":NvimTreeRefresh | NvimTreeFindFileToggle<CR>"
+-- lvim.lsp.buffer_mappings.visual_mode["r"] = { "\"_dP" }
+--
+-- lvim.lsp.buffer_mappings.normal_mode["ma"] = { ':lua require("harpoon.mark").add_file()<CR>' }
+-- lvim.lsp.buffer_mappings.normal_mode["mm"] = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
+-- lvim.lsp.buffer_mappings.normal_mode["mn"] = { ':lua require("harpoon.ui").nav_next()<CR>' }
+-- lvim.lsp.buffer_mappings.normal_mode["mp"] = { ':lua require("harpoon.ui").nav_prev()<CR>' }
 
-lvim.keys.normal_mode["<S-q>"] = ":BufferKill<CR>"
+lvim.keys.normal_mode["<s-x>"]            = { ':lua require("harpoon.mark").add_file()<CR>' }
+lvim.keys.normal_mode["<s-z>"]            = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
+lvim.keys.normal_mode["<s-n>"]            = { ':lua require("harpoon.ui").nav_next()<CR>' }
+lvim.keys.normal_mode["<s-m>"]            = { ':lua require("harpoon.ui").nav_prev()<CR>' }
 
-lvim.keys.normal_mode["<C-p>"] = ":Telescope git_files<CR>"
-lvim.keys.normal_mode["<C-S-f>"] = ":Telescope live_grep<CR>"
-lvim.keys.normal_mode["<C-S-g>"] = ":DiffviewOpen<CR>"
-lvim.keys.normal_mode["<C-S-b>"] = ":DiffviewClose<CR>"
+lvim.lsp.buffer_mappings.normal_mode["1"] = { ':lua require("harpoon.ui").nav_file(1)<CR>' }
+lvim.lsp.buffer_mappings.normal_mode["2"] = { ':lua require("harpoon.ui").nav_file(2)<CR>' }
+lvim.lsp.buffer_mappings.normal_mode["3"] = { ':lua require("harpoon.ui").nav_file(3)<CR>' }
+lvim.lsp.buffer_mappings.normal_mode["4"] = { ':lua require("harpoon.ui").nav_file(4)<CR>' }
+lvim.lsp.buffer_mappings.normal_mode["5"] = { ':lua require("harpoon.ui").nav_file(5)<CR>' }
+lvim.lsp.buffer_mappings.normal_mode["6"] = { ':lua require("harpoon.ui").nav_file(6)<CR>' }
+
+lvim.keys.normal_mode["<C-b>"]            = ":NvimTreeRefresh | NvimTreeToggle<CR>"
+lvim.keys.normal_mode["<C-f>"]            = ":NvimTreeRefresh | NvimTreeFindFileToggle<CR>"
+
+lvim.keys.normal_mode["<S-q>"]            = ":BufferKill<CR>"
+
+lvim.keys.normal_mode["<C-p>"]            = ":Telescope git_files<CR>"
+lvim.keys.normal_mode["<C-S-f>"]          = ":Telescope live_grep<CR>"
+lvim.keys.normal_mode["<C-S-g>"]          = ":DiffviewOpen<CR>"
+lvim.keys.normal_mode["<C-S-b>"]          = ":DiffviewClose<CR>"
 
 
 lvim.keys.normal_mode["<s-l>"] = ":BufferLineCycleNext<CR>"
@@ -114,6 +134,7 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "%.sqlite3",
   "%.ipynb",
   "node_modules/*",
+  "Library/*",
   ".next/*",
   ".conf/*",
   ".oh-my-zsh/*",
@@ -193,7 +214,7 @@ lvim.builtin.lualine.sections.lualine_z = { "encoding", "location", "progress" }
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
-  { command = "black", filetypes = { "python" } },
+  { command = "black",   filetypes = { "python" } },
   {
     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
     command = "prettier",
@@ -203,6 +224,7 @@ formatters.setup {
     --     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
     filetypes = { "javascript", "javascript", "typescript", "typescriptreact" },
   },
+  { command = "rustfmt", filetypes = { "rust" } },
 }
 
 -- -- set additional linters
@@ -399,16 +421,16 @@ lvim.plugins = {
     event = "BufRead",
     config = function()
       require "octo".setup({
-        default_remote = { "upstream", "origin" }; -- order to try remotes
+        default_remote = { "upstream", "origin" }, -- order to try remotes
         ssh_aliases = {}, -- SSH aliases. e.g. `ssh_aliases = {["github.com-work"] = "github.com"}`
-        reaction_viewer_hint_icon = ""; -- marker for user reactions
-        user_icon = " "; -- user icon
-        timeline_marker = ""; -- timeline marker
-        timeline_indent = "2"; -- timeline indentation
-        right_bubble_delimiter = ""; -- bubble delimiter
-        left_bubble_delimiter = ""; -- bubble delimiter
-        github_hostname = ""; -- GitHub Enterprise host
-        snippet_context_lines = 4; -- number or lines around commented lines
+        reaction_viewer_hint_icon = "", -- marker for user reactions
+        user_icon = " ", -- user icon
+        timeline_marker = "", -- timeline marker
+        timeline_indent = "2", -- timeline indentation
+        right_bubble_delimiter = "", -- bubble delimiter
+        left_bubble_delimiter = "", -- bubble delimiter
+        github_hostname = "", -- GitHub Enterprise host
+        snippet_context_lines = 4, -- number or lines around commented lines
         issues = {
           order_by = { -- criteria to sort results of `Octo issue list`
             field = "CREATED_AT", -- either COMMENTS, CREATED_AT or UPDATED_AT (https://docs.github.com/en/graphql/reference/enums#issueorderfield)
@@ -540,7 +562,14 @@ lvim.plugins = {
         }
       })
     end,
+  },
+  { "lervag/vimtex",
+    config = function()
+      vim.g.vimtex_view_method = 'zathura'
+    end,
 
   },
+  { "nvim-lua/plenary.nvim" },
+  { "ThePrimeagen/harpoon" }
 
 }
