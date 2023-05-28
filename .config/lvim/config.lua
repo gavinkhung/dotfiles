@@ -1,58 +1,66 @@
 -- general
-vim.opt.clipboard                         = "unnamedplus"
-vim.opt.expandtab                         = true
-vim.opt.relativenumber                    = true
-vim.opt.termguicolors                     = true
-vim.opt.ignorecase                        = true
-vim.opt.smartcase                         = true
-vim.opt.wrap                              = false
-vim.opt.scrolloff                         = 8
-vim.opt.undodir                           = vim.fn.stdpath "cache" .. "/undo"
-vim.opt.undofile                          = true
-vim.opt.spell                             = true
-vim.opt.cursorline                        = true
+vim.opt.clipboard                                    = "unnamedplus"
+vim.opt.expandtab                                    = true
+vim.opt.relativenumber                               = true
+vim.opt.termguicolors                                = true
+vim.opt.ignorecase                                   = true
+vim.opt.smartcase                                    = true
+vim.opt.wrap                                         = false
+vim.opt.scrolloff                                    = 8
+vim.opt.undodir                                      = vim.fn.stdpath "cache" .. "/undo"
+vim.opt.undofile                                     = true
+vim.opt.spell                                        = true
+vim.opt.cursorline                                   = true
+vim.opt.incsearch                                    = true
 
-lvim.colorscheme                          = "kanagawa"
+lvim.colorscheme                                     = "kanagawa"
 
-lvim.log.level                            = "warn"
-lvim.format_on_save                       = true
-lvim.lint_on_save                         = true
-lvim.transparent_window                   = true
+lvim.log.level                                       = "warn"
+lvim.format_on_save                                  = true
+lvim.lint_on_save                                    = true
+lvim.transparent_window                              = true
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
-lvim.leader                               = "space"
+lvim.leader                                          = "space"
 -- add your own keymapping:w
+lvim.lsp.buffer_mappings.visual_mode["r"]            = { "\"_dP" }
+lvim.keys.normal_mode["<s-x>"]                       = { ':lua require("harpoon.mark").add_file()<CR>' }
+lvim.keys.normal_mode["<s-z>"]                       = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
+lvim.keys.normal_mode["0"]                           = { ':lua require("harpoon.ui").nav_next()<CR>' }
+lvim.keys.normal_mode["9"]                           = { ':lua require("harpoon.ui").nav_prev()<CR>' }
 
-lvim.lsp.buffer_mappings.visual_mode["r"] = { "\"_dP" }
-lvim.keys.normal_mode["<s-x>"]            = { ':lua require("harpoon.mark").add_file()<CR>' }
-lvim.keys.normal_mode["<s-z>"]            = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
-lvim.keys.normal_mode["<s-n>"]            = { ':lua require("harpoon.ui").nav_next()<CR>' }
-lvim.keys.normal_mode["<s-m>"]            = { ':lua require("harpoon.ui").nav_prev()<CR>' }
+lvim.keys.normal_mode["1"]                           = { ':lua require("harpoon.ui").nav_file(1)<CR>' }
+lvim.keys.normal_mode["2"]                           = { ':lua require("harpoon.ui").nav_file(2)<CR>' }
+lvim.keys.normal_mode["3"]                           = { ':lua require("harpoon.ui").nav_file(3)<CR>' }
+lvim.keys.normal_mode["4"]                           = { ':lua require("harpoon.ui").nav_file(4)<CR>' }
+lvim.keys.normal_mode["5"]                           = { ':lua require("harpoon.ui").nav_file(5)<CR>' }
+lvim.keys.normal_mode["6"]                           = { ':lua require("harpoon.ui").nav_file(6)<CR>' }
 
-lvim.lsp.buffer_mappings.normal_mode["1"] = { ':lua require("harpoon.ui").nav_file(1)<CR>' }
-lvim.lsp.buffer_mappings.normal_mode["2"] = { ':lua require("harpoon.ui").nav_file(2)<CR>' }
-lvim.lsp.buffer_mappings.normal_mode["3"] = { ':lua require("harpoon.ui").nav_file(3)<CR>' }
-lvim.lsp.buffer_mappings.normal_mode["4"] = { ':lua require("harpoon.ui").nav_file(4)<CR>' }
-lvim.lsp.buffer_mappings.normal_mode["5"] = { ':lua require("harpoon.ui").nav_file(5)<CR>' }
-lvim.lsp.buffer_mappings.normal_mode["6"] = { ':lua require("harpoon.ui").nav_file(6)<CR>' }
+lvim.keys.normal_mode["x"]                           = { "\"_x" }
+lvim.keys.normal_mode["<C-d>"]                       = { "<C-d>zz" }
+lvim.keys.normal_mode["<C-u>"]                       = { "<C-u>zz" }
+lvim.keys.normal_mode["n"]                           = { "nzzzv" }
+lvim.keys.normal_mode["N"]                           = { "Nzzzv" }
+lvim.keys.normal_mode["nh"]                          = { ":nohl<CR>" }
 
-lvim.lsp.buffer_mappings.normal_mode["x"] = { "\"_x" }
+lvim.keys.normal_mode["m"]                           = ":MaximizerToggle<CR>"
 
-lvim.keys.normal_mode["<C-b>"]            = ":NvimTreeRefresh | NvimTreeToggle<CR>"
-lvim.keys.normal_mode["<C-f>"]            = ":NvimTreeRefresh | NvimTreeFindFileToggle<CR>"
+lvim.keys.normal_mode["<C-b>"]                       = ":NvimTreeRefresh | NvimTreeToggle<CR>"
+lvim.keys.normal_mode["<C-f>"]                       = ":NvimTreeRefresh | NvimTreeFindFileToggle<CR>"
 
-lvim.keys.normal_mode["<S-q>"]            = ":BufferKill<CR>"
+lvim.keys.normal_mode["<S-q>"]                       = ":BufferKill<CR>"
 
-lvim.keys.normal_mode["<C-p>"]            = ":Telescope git_files<CR>"
-lvim.keys.normal_mode["<C-S-f>"]          = ":Telescope live_grep<CR>"
-lvim.keys.normal_mode["<C-S-g>"]          = ":DiffviewOpen<CR>"
-lvim.keys.normal_mode["<C-S-b>"]          = ":DiffviewClose<CR>"
+lvim.keys.normal_mode["<C-p>"]                       = ":Telescope git_files<CR>"
+lvim.keys.normal_mode["<C-;>"]                       = ":Telescope find_files<CR>"
+lvim.keys.normal_mode["<C-S-f>"]                     = ":Telescope live_grep<CR>"
 
+lvim.keys.normal_mode["<C-S-g>"]                     = ":DiffviewOpen<CR>"
+lvim.keys.normal_mode["<C-S-b>"]                     = ":DiffviewClose<CR>"
 
-lvim.keys.normal_mode["<s-l>"] = ":BufferLineCycleNext<CR>"
-lvim.keys.normal_mode["<s-h>"] = ":BufferLineCyclePrev<CR>"
+lvim.keys.normal_mode["<s-l>"]                       = ":BufferLineCycleNext<CR>"
+lvim.keys.normal_mode["<s-h>"]                       = ":BufferLineCyclePrev<CR>"
 
-lvim.builtin.which_key.mappings["S"] = {
+lvim.builtin.which_key.mappings["S"]                 = {
   name = "Session",
   c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
   l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
@@ -66,8 +74,8 @@ lvim.builtin.which_key.mappings["S"] = {
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
-local _, actions = pcall(require, "telescope.actions")
-lvim.builtin.telescope.defaults.mappings = {
+local _, actions                                     = pcall(require, "telescope.actions")
+lvim.builtin.telescope.defaults.mappings             = {
   -- for input mode
   i = {
     ["<C-j>"] = actions.move_selection_next,
@@ -94,8 +102,8 @@ lvim.builtin.telescope.defaults.mappings = {
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
 -- }
 
-lvim.builtin.alpha.active = true
-lvim.builtin.alpha.mode = "dashboard"
+lvim.builtin.alpha.active                            = true
+lvim.builtin.alpha.mode                              = "dashboard"
 -- lvim.builtin.alpha.dashboard.section.header.val = {
 --   "                                                     ",
 --   "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
@@ -107,7 +115,7 @@ lvim.builtin.alpha.mode = "dashboard"
 --   "                                                     ",
 -- }
 
-lvim.builtin.alpha.dashboard.section.header.val = {
+lvim.builtin.alpha.dashboard.section.header.val      = {
   "                                   ",
   "                                   ",
   "                                   ",
@@ -125,7 +133,7 @@ lvim.builtin.alpha.dashboard.section.header.val = {
   "                                   ",
 }
 
-lvim.builtin.terminal.active = true
+lvim.builtin.terminal.active                         = true
 lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "vendor/*",
   "%.lock",
@@ -186,10 +194,10 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = {
   "%.flac",
   "%.tar.gz",
 }
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.nvimtree.setup.view.side                = "left"
+lvim.builtin.nvimtree.setup.renderer.icons.show.git  = false
 -- if you don't want all the parsers change this to a table of the ones you want
-lvim.builtin.treesitter.ensure_installed = {
+lvim.builtin.treesitter.ensure_installed             = {
   "bash",
   "c",
   "javascript",
@@ -205,13 +213,13 @@ lvim.builtin.treesitter.ensure_installed = {
   "cpp"
 }
 
-lvim.builtin.treesitter.highlight.enabled = true
+lvim.builtin.treesitter.highlight.enabled            = true
 
-lvim.builtin.lualine.sections.lualine_a = { "mode" }
-lvim.builtin.lualine.sections.lualine_z = { "encoding", "location", "progress" }
+lvim.builtin.lualine.sections.lualine_a              = { "mode" }
+lvim.builtin.lualine.sections.lualine_z              = { "encoding", "location", "progress" }
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
-local formatters = require "lvim.lsp.null-ls.formatters"
+local formatters                                     = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "black",   filetypes = { "python" } },
   {
@@ -236,11 +244,6 @@ linters.setup {
     --     ---@usage arguments to pass to the formatter
     --     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
     extra_args = { "--severity", "warning" },
-  },
-  {
-    command = "codespell",
-    --     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "javascript", "python" },
   },
 }
 
@@ -564,11 +567,15 @@ lvim.plugins = {
   },
   { "lervag/vimtex",
     config = function()
-      vim.g.vimtex_view_method = 'zathura'
+      -- vim.cmd([[
+      -- let g:vimtex_view_method = 'zathura'
+      -- ]])
     end,
-
   },
   { "nvim-lua/plenary.nvim" },
-  { "ThePrimeagen/harpoon" }
-
+  { "ThePrimeagen/harpoon" },
+  { "szw/vim-maximizer" }
 }
+
+vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_view_general_viewer = 'zathura'
