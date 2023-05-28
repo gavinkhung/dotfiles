@@ -4,11 +4,13 @@ vim.opt.expandtab                         = true
 vim.opt.relativenumber                    = true
 vim.opt.termguicolors                     = true
 vim.opt.ignorecase                        = true
+vim.opt.smartcase                         = true
 vim.opt.wrap                              = false
 vim.opt.scrolloff                         = 8
 vim.opt.undodir                           = vim.fn.stdpath "cache" .. "/undo"
 vim.opt.undofile                          = true
 vim.opt.spell                             = true
+vim.opt.cursorline                        = true
 
 lvim.colorscheme                          = "kanagawa"
 
@@ -20,13 +22,8 @@ lvim.transparent_window                   = true
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader                               = "space"
 -- add your own keymapping:w
--- lvim.lsp.buffer_mappings.visual_mode["r"] = { "\"_dP" }
---
--- lvim.lsp.buffer_mappings.normal_mode["ma"] = { ':lua require("harpoon.mark").add_file()<CR>' }
--- lvim.lsp.buffer_mappings.normal_mode["mm"] = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
--- lvim.lsp.buffer_mappings.normal_mode["mn"] = { ':lua require("harpoon.ui").nav_next()<CR>' }
--- lvim.lsp.buffer_mappings.normal_mode["mp"] = { ':lua require("harpoon.ui").nav_prev()<CR>' }
 
+lvim.lsp.buffer_mappings.visual_mode["r"] = { "\"_dP" }
 lvim.keys.normal_mode["<s-x>"]            = { ':lua require("harpoon.mark").add_file()<CR>' }
 lvim.keys.normal_mode["<s-z>"]            = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
 lvim.keys.normal_mode["<s-n>"]            = { ':lua require("harpoon.ui").nav_next()<CR>' }
@@ -38,6 +35,8 @@ lvim.lsp.buffer_mappings.normal_mode["3"] = { ':lua require("harpoon.ui").nav_fi
 lvim.lsp.buffer_mappings.normal_mode["4"] = { ':lua require("harpoon.ui").nav_file(4)<CR>' }
 lvim.lsp.buffer_mappings.normal_mode["5"] = { ':lua require("harpoon.ui").nav_file(5)<CR>' }
 lvim.lsp.buffer_mappings.normal_mode["6"] = { ':lua require("harpoon.ui").nav_file(6)<CR>' }
+
+lvim.lsp.buffer_mappings.normal_mode["x"] = { "\"_x" }
 
 lvim.keys.normal_mode["<C-b>"]            = ":NvimTreeRefresh | NvimTreeToggle<CR>"
 lvim.keys.normal_mode["<C-f>"]            = ":NvimTreeRefresh | NvimTreeFindFileToggle<CR>"
