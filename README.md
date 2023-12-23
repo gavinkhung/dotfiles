@@ -1,5 +1,7 @@
 # dotfiles
 
+Follow steps on https://github.com/dandavison/delta
+
 ## MacOS
 ```bash
 touch .zshrc .tmux.conf
