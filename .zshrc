@@ -11,14 +11,16 @@ export EDITOR="$VISUAL"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
-plugins=(git gh pip python brew node vscode autopep8 gitignore copyfile copypath zsh-autosuggestions vi-mode history-substring-search zsh-syntax-highlighting)
+plugins=(git gh pip python brew node vscode autopep8 tmux gitignore copyfile copypath zsh-autosuggestions vi-mode history-substring-search zsh-syntax-highlighting)
 
-ZSH_AUTOSUGGEST_STRATEGY="completion"
+export ZSH_AUTOSUGGEST_STRATEGY="completion"
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#9699a3"
 
 HYPHEN_INSENSITIVE="true"
 
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --exclude /opt/ --exclude /Library/ --exclude /Pictures/ --exclude /Movies/ --exclude /Music/'
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --exclude /opt/ --exclude /Library/ --exclude /Pictures/ --exclude /Movies/ --exclude /Music/ --exclude /go/'
+export FZF_CTRL_T_COMMAND="fd --type directory --strip-cwd-prefix --exclude /opt/ --exclude /Library/ --exclude /Pictures/ --exclude /Movies/ --exclude /Music/ --exclude /go/"
+
 export BAT_THEME="Visual Studio Dark+"
 
 # Uncomment the following line if pasting URLs and other text is messed up.
@@ -56,10 +58,8 @@ alias nnn="nnn -de"
 alias cat="bat --paging=never"
 alias fzf="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
-alias gcc='gcc-12'
-alias g++='g++-12'
-
-alias grace="ssh -Y ghung@grace.umd.edu"
+alias gcc='gcc'
+alias g++='g++'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -82,4 +82,22 @@ PATH=$PATH:~/.local/bin
 
 eval "$(starship init zsh)"
 
-neofetch
+
+if [ "$TERM_PROGRAM" != tmux ]; then
+  neofetch
+fi
+
+
+# opam configuration
+[[ ! -r /Users/gavinhung/.opam/opam-init/init.zsh ]] || source /Users/gavinhung/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+
+
+# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+
+export PATH="/Users/gavinhung/.cargo/bin:/Library/TeX/texbin/:Users/gavinhung/.opam/4.13.0/bin:/Users/gavinhung/opt/anaconda3/bin:/Users/gavinhung/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/gavinhung/.local/bin:/opt/homebrew/opt/fzf/bin:/Users/gavinhung/.rvm/bin:/Users/gavinhung/.local/bin:/Users/gavinhung/.rvm/bin:/opt/homebrew/opt/llvm/bin"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

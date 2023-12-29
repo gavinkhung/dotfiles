@@ -1,3 +1,8 @@
+-- Read the docs: https://www.lunarvim.org/docs/configuration
+-- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
+-- Forum: https://www.reddit.com/r/lunarvim/
+-- Discord: https://discord.com/invite/Xb9B4Ny
+
 -- general
 vim.opt.clipboard                                    = "unnamedplus"
 vim.opt.expandtab                                    = true
@@ -12,6 +17,7 @@ vim.opt.undofile                                     = true
 vim.opt.spell                                        = true
 vim.opt.cursorline                                   = true
 vim.opt.incsearch                                    = true
+vim.opt.spell                                        = true
 
 lvim.colorscheme                                     = "kanagawa"
 
@@ -26,8 +32,8 @@ lvim.leader                                          = "space"
 lvim.lsp.buffer_mappings.visual_mode["r"]            = { "\"_dP" }
 lvim.keys.normal_mode["<s-x>"]                       = { ':lua require("harpoon.mark").add_file()<CR>' }
 lvim.keys.normal_mode["<s-z>"]                       = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
-lvim.keys.normal_mode["0"]                           = { ':lua require("harpoon.ui").nav_next()<CR>' }
-lvim.keys.normal_mode["9"]                           = { ':lua require("harpoon.ui").nav_prev()<CR>' }
+lvim.keys.normal_mode["8"]                           = { ':lua require("harpoon.ui").nav_prev()<CR>' }
+lvim.keys.normal_mode["9"]                           = { ':lua require("harpoon.ui").nav_next()<CR>' }
 
 lvim.keys.normal_mode["1"]                           = { ':lua require("harpoon.ui").nav_file(1)<CR>' }
 lvim.keys.normal_mode["2"]                           = { ':lua require("harpoon.ui").nav_file(2)<CR>' }
@@ -45,8 +51,8 @@ lvim.keys.normal_mode["nh"]                          = { ":nohl<CR>" }
 
 lvim.keys.normal_mode["m"]                           = ":MaximizerToggle<CR>"
 
-lvim.keys.normal_mode["<C-b>"]                       = ":NvimTreeRefresh | NvimTreeToggle<CR>"
-lvim.keys.normal_mode["<C-f>"]                       = ":NvimTreeRefresh | NvimTreeFindFileToggle<CR>"
+lvim.keys.normal_mode["<C-b>"]                       = ":NvimTreeToggle<CR>"
+lvim.keys.normal_mode["<C-f>"]                       = ":NvimTreeFindFileToggle<CR>"
 
 lvim.keys.normal_mode["<S-q>"]                       = ":BufferKill<CR>"
 
@@ -218,8 +224,38 @@ lvim.builtin.treesitter.highlight.enabled            = true
 lvim.builtin.lualine.sections.lualine_a              = { "mode" }
 lvim.builtin.lualine.sections.lualine_z              = { "encoding", "location", "progress" }
 
+-- local nvim_lsp                                       = require("lspconfig")
+
+-- nvim_lsp.clangd.setup {
+--   cmd = { "/opt/homebrew/opt/llvm/bin/clangd", "--background-index" },
+--   root_dir = nvim_lsp.util.root_pattern("compile_commands.json", ".clangd"),
+-- }
+
+local clangd_flags                                   = {
+  "--all-scopes-completion",
+  "--suggest-missing-includes",
+  "--background-index",
+  "--pch-storage=disk",
+  "--cross-file-rename",
+  "--log=info",
+  "--completion-style=detailed",
+  "--enable-config",          -- clangd 11+ supports reading from .clangd configuration file
+  "--clang-tidy",
+  "--offset-encoding=utf-16", --temporary fix for null-ls
+  "--clang-tidy-checks=-*,llvm-*,clang-analyzer-*,modernize-*,-modernize-use-trailing-return-type",
+  "--fallback-style=Google",
+  "--query-driver=<list-of-white-listed-complers>",
+}
+
+local clangd_bin                                     = "clangd"
+
+local opts                                           = {
+  cmd = { clangd_bin, unpack(clangd_flags) },
+}
+require("lvim.lsp.manager").setup("clangd", opts)
+
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
-local formatters                                     = require "lvim.lsp.null-ls.formatters"
+local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "black",   filetypes = { "python" } },
   {
@@ -262,7 +298,8 @@ lvim.plugins = {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
-  { "rebelot/kanagawa.nvim",
+  {
+    "rebelot/kanagawa.nvim",
     config = function()
       require("kanagawa").setup({
         colors = {
@@ -280,7 +317,8 @@ lvim.plugins = {
     end,
   },
   { "tpope/vim-surround", },
-  { "windwp/nvim-ts-autotag",
+  {
+    "windwp/nvim-ts-autotag",
     config = function()
       require("nvim-ts-autotag").setup()
     end
@@ -289,10 +327,10 @@ lvim.plugins = {
     "romgrk/nvim-treesitter-context",
     config = function()
       require("treesitter-context").setup {
-        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        enable = true,   -- Enable this plugin (Can be enabled/disabled later via commands)
         throttle = true, -- Throttles plugin updates (may improve performance)
-        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-        patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+        max_lines = 0,   -- How many lines the window should span. Values <= 0 mean no limit.
+        patterns = {     -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
           -- For all filetypes
           -- Note that setting an entry here replaces all other patterns for this entry.
           -- By setting the 'default' entry below, you can control which nodes you want to
@@ -325,14 +363,14 @@ lvim.plugins = {
         -- All these keys will be mapped to their corresponding default scrolling animation
         mappings = { '<C-u>', '<C-d>',
           '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
-        hide_cursor = true, -- Hide cursor while scrolling
-        stop_eof = true, -- Stop at <EOF> when scrolling downwards
+        hide_cursor = true,          -- Hide cursor while scrolling
+        stop_eof = true,             -- Stop at <EOF> when scrolling downwards
         use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
-        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+        respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
         cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-        easing_function = nil, -- Default easing function
-        pre_hook = nil, -- Function to run before the scrolling animation starts
-        post_hook = nil, -- Function to run after the scrolling animation ends
+        easing_function = nil,       -- Default easing function
+        pre_hook = nil,              -- Function to run before the scrolling animation starts
+        post_hook = nil,             -- Function to run after the scrolling animation ends
       })
     end
   },
@@ -395,7 +433,7 @@ lvim.plugins = {
     event = "BufRead",
     config = function()
       require("numb").setup {
-        show_numbers = true, -- Enable 'number' for the window while peeking
+        show_numbers = true,    -- Enable 'number' for the window while peeking
         show_cursorline = true, -- Enable 'cursorline' for the window while peeking
       }
     end,
@@ -404,11 +442,11 @@ lvim.plugins = {
     "rmagatti/goto-preview",
     config = function()
       require('goto-preview').setup {
-        width = 120, -- Width of the floating window
-        height = 25, -- Height of the floating window
+        width = 120,             -- Width of the floating window
+        height = 25,             -- Height of the floating window
         default_mappings = true, -- Bind default mappings
-        debug = false, -- Print debug information
-        opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
+        debug = false,           -- Print debug information
+        opacity = nil,           -- 0-100 opacity level of the floating window where 100 is fully transparent.
         post_open_hook = nil,
         -- You can use "default_mappings = true" setup option
         -- Or explicitly set keybindings
@@ -440,14 +478,15 @@ lvim.plugins = {
           }
         },
         pull_requests = {
-          order_by = { -- criteria to sort the results of `Octo pr list`
-            field = "CREATED_AT", -- either COMMENTS, CREATED_AT or UPDATED_AT (https://docs.github.com/en/graphql/reference/enums#issueorderfield)
-            direction = "DESC" -- either DESC or ASC (https://docs.github.com/en/graphql/reference/enums#orderdirection)
+          order_by = {                             -- criteria to sort the results of `Octo pr list`
+            field = "CREATED_AT",                  -- either COMMENTS, CREATED_AT or UPDATED_AT (https://docs.github.com/en/graphql/reference/enums#issueorderfield)
+            direction =
+            "DESC"                                 -- either DESC or ASC (https://docs.github.com/en/graphql/reference/enums#orderdirection)
           },
           always_select_remote_on_create = "false" -- always give prompt to select base remote repo when creating PRs
         },
         file_panel = {
-          size = 10, -- changed files panel rows
+          size = 10,       -- changed files panel rows
           use_icons = true -- use web-devicons in file panel (if false, nvim-web-devicons does not need to be installed)
         },
         mappings = {
@@ -565,7 +604,8 @@ lvim.plugins = {
       })
     end,
   },
-  { "lervag/vimtex",
+  {
+    "lervag/vimtex",
     config = function()
       -- vim.cmd([[
       -- let g:vimtex_view_method = 'zathura'
@@ -574,7 +614,8 @@ lvim.plugins = {
   },
   { "nvim-lua/plenary.nvim" },
   { "ThePrimeagen/harpoon" },
-  { "szw/vim-maximizer" }
+  { "szw/vim-maximizer" },
+  { "mbbill/undotree" }
 }
 
 vim.g.vimtex_view_method = 'zathura'
