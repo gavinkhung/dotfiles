@@ -32,15 +32,8 @@ lvim.leader                                          = "space"
 lvim.lsp.buffer_mappings.visual_mode["r"]            = { "\"_dP" }
 lvim.keys.normal_mode["<s-x>"]                       = { ':lua require("harpoon.mark").add_file()<CR>' }
 lvim.keys.normal_mode["<s-z>"]                       = { ':lua require("harpoon.ui").toggle_quick_menu()<CR>' }
-lvim.keys.normal_mode["8"]                           = { ':lua require("harpoon.ui").nav_prev()<CR>' }
-lvim.keys.normal_mode["9"]                           = { ':lua require("harpoon.ui").nav_next()<CR>' }
-
-lvim.keys.normal_mode["1"]                           = { ':lua require("harpoon.ui").nav_file(1)<CR>' }
-lvim.keys.normal_mode["2"]                           = { ':lua require("harpoon.ui").nav_file(2)<CR>' }
-lvim.keys.normal_mode["3"]                           = { ':lua require("harpoon.ui").nav_file(3)<CR>' }
-lvim.keys.normal_mode["4"]                           = { ':lua require("harpoon.ui").nav_file(4)<CR>' }
-lvim.keys.normal_mode["5"]                           = { ':lua require("harpoon.ui").nav_file(5)<CR>' }
-lvim.keys.normal_mode["6"]                           = { ':lua require("harpoon.ui").nav_file(6)<CR>' }
+lvim.keys.normal_mode["<s-n>"]                       = { ':lua require("harpoon.ui").nav_prev()<CR>' }
+lvim.keys.normal_mode["<s-m>"]                       = { ':lua require("harpoon.ui").nav_next()<CR>' }
 
 lvim.keys.normal_mode["x"]                           = { "\"_x" }
 lvim.keys.normal_mode["<C-d>"]                       = { "<C-d>zz" }
